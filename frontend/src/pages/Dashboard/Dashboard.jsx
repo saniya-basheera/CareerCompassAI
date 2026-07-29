@@ -26,7 +26,7 @@ const generateJobMatch = async () => {
   try {
 
     const response = await axios.post(
-      "http://127.0.0.1:8000/job-match",
+      "http://https://careercompassai-tupf.onrender.com/job-match",
       {
         jobRole,
         skills: userSkills,
@@ -57,7 +57,7 @@ const generateJobMatch = async () => {
       try {
 
         const roadmapRes = await axios.post(
-          "http://127.0.0.1:8000/generate-roadmap",
+          "http://https://careercompassai-tupf.onrender.com/generate-roadmap",
           {
             jobRole
           }
@@ -71,7 +71,7 @@ const generateJobMatch = async () => {
 
 
         const interviewRes = await axios.post(
-          "http://127.0.0.1:8000/generate-interview",
+          "http://https://careercompassai-tupf.onrender.com/generate-interview",
           {
             jobRole
           }
@@ -82,7 +82,7 @@ const generateJobMatch = async () => {
 setInterview(Array.isArray(interviewRes.data) ? interviewRes.data : []);
 
 const jobsRes = await axios.post(
-  "http://127.0.0.1:8000/job-openings",
+  "http://https://careercompassai-tupf.onrender.com/job-openings",
   {
     jobRole: jobRole,
     location: "India"
