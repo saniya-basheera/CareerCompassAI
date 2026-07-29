@@ -37,7 +37,7 @@ function MockInterview() {
   const submitAnswer = async () => {
     try {
       const res = await axios.post(
-        "http://https://careercompassai-tupf.onrender.com/mock-interview",
+        "https://careercompassai-tupf.onrender.com/mock-interview",
         {
           jobRole,
           question: questions[currentQuestion],

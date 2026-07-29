@@ -159,13 +159,13 @@ uvicorn main:app --reload
 The backend will be available at:
 
 ```
-http://https://careercompassai-tupf.onrender.com
+https://careercompassai-tupf.onrender.com
 ```
 
 API documentation is available at:
 
 ```
-http://https://careercompassai-tupf.onrender.com/docs
+https://careercompassai-tupf.onrender.com/docs
 ```
 
 ---

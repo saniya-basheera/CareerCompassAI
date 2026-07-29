@@ -70,7 +70,7 @@ const generateResume = async () => {
     setLoading(true);
 
     const response = await axios.post(
-      "http://https://careercompassai-tupf.onrender.com/generate-resume",
+      "https://careercompassai-tupf.onrender.com/generate-resume",
       resumeData
     );
 

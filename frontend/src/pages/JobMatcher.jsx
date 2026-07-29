@@ -23,7 +23,7 @@ function JobMatcher() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://https://careercompassai-tupf.onrender.com/job-match",
+        "https://careercompassai-tupf.onrender.com/job-match",
         formData
       );
 
