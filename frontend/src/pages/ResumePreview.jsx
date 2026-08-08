@@ -1,6 +1,6 @@
 function ResumePreview({ resumeData, aiResume }) {
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-10">
+    <div id="resume-preview" className="bg-white">
 
       <h1 className="text-4xl font-bold">
         {resumeData.fullName}
@@ -31,7 +31,6 @@ function ResumePreview({ resumeData, aiResume }) {
       </h2>
 
       <div className="flex flex-wrap gap-2 mt-4">
-
         {[...resumeData.skills, ...aiResume.skills].map((skill, index) => (
           <span
             key={index}
@@ -40,7 +39,6 @@ function ResumePreview({ resumeData, aiResume }) {
             {skill}
           </span>
         ))}
-
       </div>
 
       <hr className="my-6" />
@@ -58,17 +56,15 @@ function ResumePreview({ resumeData, aiResume }) {
       </p>
 
       <ul className="list-disc ml-6 mt-3">
-
         {aiResume.experience.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
-
       </ul>
 
       <hr className="my-6" />
 
       <h2 className="text-2xl font-bold text-blue-700">
-        Project
+        Projects
       </h2>
 
       <h3 className="font-semibold mt-4">
@@ -80,11 +76,9 @@ function ResumePreview({ resumeData, aiResume }) {
       </p>
 
       <ul className="list-disc ml-6 mt-3">
-
         {aiResume.project.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
-
       </ul>
 
       <hr className="my-6" />

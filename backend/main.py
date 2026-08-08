@@ -1,3 +1,4 @@
+from jd_resume import generate_jd_resume
 from jobs import get_jobs
 from jobmatcher import generate_job_match
 from fastapi import FastAPI
@@ -32,6 +33,32 @@ class CourseRequest(BaseModel):
     jobRole: str
     currentSkills: str
 class ResumeRequest(BaseModel):
+    fullName: str
+    email: str
+    phone: str
+    location: str
+    linkedin: str
+    github: str
+    jobRole: str
+
+    degree: str
+    college: str
+    graduationYear: str
+    cgpa: str
+
+    skills: List[str]
+
+    company: str
+    role: str
+    employmentType: str
+    duration: str
+
+    projectTitle: str
+    projectTech: str
+
+class JDResumeRequest(BaseModel):
+    jobDescription: str
+
     fullName: str
     email: str
     phone: str
@@ -96,6 +123,10 @@ def course_recommendation(data: CourseRequest):
 @app.post("/generate-resume")
 def resume(data: ResumeRequest):
     return generate_resume(data.model_dump())
+
+@app.post("/generate-jd-resume")
+def jd_resume(data: JDResumeRequest):
+    return generate_jd_resume(data.model_dump())
 
 @app.post("/job-match")
 def job_match(data: JobMatchRequest):

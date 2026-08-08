@@ -1,210 +1,103 @@
+import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-export const downloadResume = (resumeData, aiResume) => {
-  const doc = new jsPDF();
+export const downloadResume = async (resumeData, aiResume) => {
+  try {
+    const element = document.getElementById("resume-preview");
 
-  let y = 20;
+    if (!element) {
+      throw new Error("Resume preview not found.");
+    }
 
-  // ==========================
-  // HEADER
-  // ==========================
+    // Clone the resume so we can modify colors only for PDF generation
+    // without changing the actual preview on the screen.
+    const clone = element.cloneNode(true);
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(24);
-  doc.text(resumeData.fullName || "Your Name", 20, y);
+    clone.style.position = "absolute";
+    clone.style.left = "-99999px";
+    clone.style.top = "0";
+    clone.style.width = `${element.scrollWidth}px`;
+    clone.style.background = "#ffffff";
 
-  y += 8;
+    document.body.appendChild(clone);
 
-  doc.setDrawColor(37, 99, 235);
-  doc.setLineWidth(0.8);
-  doc.line(20, y, 190, y);
+    // Convert unsupported modern colors such as oklch()
+    // to standard RGB colors.
+    const allElements = clone.querySelectorAll("*");
 
-  y += 8;
+    allElements.forEach((el) => {
+      el.style.color = "#111827";
+      el.style.backgroundColor = "transparent";
+      el.style.borderColor = "#d1d5db";
+    });
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
+    // Keep the main resume background white.
+    clone.style.backgroundColor = "#ffffff";
 
-  doc.text(
-    `${resumeData.email} | ${resumeData.phone}`,
-    20,
-    y
-  );
+    const canvas = await html2canvas(clone, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      logging: false,
+      windowWidth: clone.scrollWidth,
+      windowHeight: clone.scrollHeight,
+    });
 
-  y += 6;
+    document.body.removeChild(clone);
 
-  doc.text(
-    `${resumeData.location}`,
-    20,
-    y
-  );
+    const imgData = canvas.toDataURL("image/png");
 
-  y += 6;
+    const pdf = new jsPDF("p", "mm", "a4");
 
-  doc.text(
-    `LinkedIn: ${resumeData.linkedin}`,
-    20,
-    y
-  );
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-  y += 6;
+    const margin = 10;
 
-  doc.text(
-    `GitHub: ${resumeData.github}`,
-    20,
-    y
-  );
+    const availableWidth = pageWidth - margin * 2;
 
-  y += 12;
+    const imageHeight =
+      (canvas.height * availableWidth) / canvas.width;
 
-  // ==========================
-  // PROFESSIONAL SUMMARY
-  // ==========================
+    let heightLeft = imageHeight;
+    let position = margin;
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(37, 99, 235);
-  doc.text("PROFESSIONAL SUMMARY", 20, y);
+    // First page
+    pdf.addImage(
+      imgData,
+      "PNG",
+      margin,
+      position,
+      availableWidth,
+      imageHeight
+    );
 
-  y += 2;
-  doc.setDrawColor(220);
-  doc.line(20, y, 190, y);
+    heightLeft -= pageHeight - margin * 2;
 
-  y += 8;
+    // Additional pages
+    while (heightLeft > 0) {
+      position = margin - (imageHeight - heightLeft);
 
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(0);
+      pdf.addPage();
 
-  const summary = doc.splitTextToSize(aiResume.summary, 170);
-  doc.text(summary, 20, y);
+      pdf.addImage(
+        imgData,
+        "PNG",
+        margin,
+        position,
+        availableWidth,
+        imageHeight
+      );
 
-  y += summary.length * 6 + 10;
+      heightLeft -= pageHeight - margin * 2;
+    }
 
-  // ==========================
-  // TECHNICAL SKILLS
-  // ==========================
+    pdf.save(
+      `${resumeData.fullName || "Resume"}_Resume.pdf`
+    );
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(37, 99, 235);
-  doc.text("TECHNICAL SKILLS", 20, y);
-
-  y += 2;
-  doc.line(20, y, 190, y);
-
-  y += 8;
-
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(0);
-
-  const skills = [...resumeData.skills, ...aiResume.skills];
-
-  skills.forEach((skill) => {
-    doc.text(`• ${skill}`, 25, y);
-    y += 6;
-  });
-
-  y += 6;
-
-  // ==========================
-  // EXPERIENCE
-  // ==========================
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(37, 99, 235);
-  doc.text("PROFESSIONAL EXPERIENCE", 20, y);
-
-  y += 2;
-  doc.line(20, y, 190, y);
-
-  y += 8;
-
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(0);
-
-  doc.text(
-    `${resumeData.role} | ${resumeData.company}`,
-    20,
-    y
-  );
-
-  y += 7;
-
-  doc.setFont("helvetica", "normal");
-
-  aiResume.experience.forEach((item) => {
-    const lines = doc.splitTextToSize("• " + item, 165);
-    doc.text(lines, 25, y);
-    y += lines.length * 6;
-  });
-
-  y += 8;
-
-  // ==========================
-  // PROJECTS
-  // ==========================
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(37, 99, 235);
-  doc.text("PROJECTS", 20, y);
-
-  y += 2;
-  doc.line(20, y, 190, y);
-
-  y += 8;
-
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(0);
-
-  doc.text(resumeData.projectTitle, 20, y);
-
-  y += 6;
-
-  doc.setFont("helvetica", "italic");
-  doc.text(`Technologies: ${resumeData.projectTech}`, 20, y);
-
-  y += 8;
-
-  doc.setFont("helvetica", "normal");
-
-  aiResume.project.forEach((item) => {
-    const lines = doc.splitTextToSize("• " + item, 165);
-    doc.text(lines, 25, y);
-    y += lines.length * 6;
-  });
-
-  y += 8;
-
-  // ==========================
-  // EDUCATION
-  // ==========================
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(37, 99, 235);
-  doc.text("EDUCATION", 20, y);
-
-  y += 2;
-  doc.line(20, y, 190, y);
-
-  y += 8;
-
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(0);
-
-  doc.text(`Degree: ${resumeData.degree}`, 20, y);
-  y += 6;
-
-  doc.text(`College: ${resumeData.college}`, 20, y);
-  y += 6;
-
-  doc.text(`CGPA: ${resumeData.cgpa}`, 20, y);
-  y += 6;
-
-  doc.text(`Graduation Year: ${resumeData.graduationYear}`, 20, y);
-
-  // ==========================
-
-  doc.save(`${resumeData.fullName}_Resume.pdf`);
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    alert("Failed to generate PDF. Check the browser console.");
+  }
 };
