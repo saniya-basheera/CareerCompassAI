@@ -44,70 +44,63 @@ const generateJobMatch = async () => {
 
 };
 
-  useEffect(() => {
+useEffect(() => {
+  if (jobRole === "No Career Selected") {
+    setLoading(false);
+    return;
+  }
 
-    if (jobRole === "No Career Selected") {
-      setLoading(false);
-      return;
-    }
-
-
-    const loadDashboard = async () => {
-
-      try {
-
-        const roadmapRes = await axios.post(
+  const loadDashboard = async () => {
+    try {
+      const [roadmapRes, interviewRes, jobsRes] = await Promise.all([
+        axios.post(
           "https://careercompassai-tupf.onrender.com/generate-roadmap",
           {
             jobRole
           }
-        );
+        ),
 
-
-        setRoadmap(roadmapRes.data.roadmap || []);
-        setCourses(roadmapRes.data.courses || []);
-        setProjects(roadmapRes.data.projects || []);
-
-
-
-        const interviewRes = await axios.post(
+        axios.post(
           "https://careercompassai-tupf.onrender.com/generate-interview",
           {
             jobRole
           }
-        );
+        ),
 
+        axios.post(
+          "https://careercompassai-tupf.onrender.com/job-openings",
+          {
+            jobRole,
+            location: "India"
+          }
+        )
+      ]);
 
-        console.log(interviewRes.data);
-setInterview(Array.isArray(interviewRes.data) ? interviewRes.data : []);
+      // Roadmap
+      setRoadmap(roadmapRes.data.roadmap || []);
+      setCourses(roadmapRes.data.courses || []);
+      setProjects(roadmapRes.data.projects || []);
 
-const jobsRes = await axios.post(
-  "https://careercompassai-tupf.onrender.com/job-openings",
-  {
-    jobRole: jobRole,
-    location: "India"
-  }
-);
+      // Interview
+      setInterview(
+        Array.isArray(interviewRes.data)
+          ? interviewRes.data
+          : []
+      );
 
-setJobs(jobsRes.data);
+      // Jobs
+      setJobs(jobsRes.data || []);
 
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-
-
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoading(false);
+    }
+  };
 
-    };
+  loadDashboard();
 
-
-    loadDashboard();
-
-
-  }, [jobRole]);
+}, [jobRole]);
 
 
 
