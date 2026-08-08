@@ -22,7 +22,7 @@ function CourseRecommendation() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://https://careercompassai-tupf.onrender.com/course-recommendation",
+        "http://careercompassai-tupf.onrender.com/course-recommendation",
         formData
       );
 
