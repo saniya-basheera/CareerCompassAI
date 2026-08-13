@@ -1,3 +1,4 @@
+import JDResumeBuilder from "./pages/JDResumeBuilder";
 import { Routes, Route } from "react-router-dom";
 import JobMatcher from "./pages/JobMatcher";
 import Home from "./pages/Home/Home";
@@ -8,6 +9,7 @@ import MockInterview from "./pages/MockInterview";
 function App() {
   return (
     <Routes>
+      <Route path="/jd-resume-builder" element={<JDResumeBuilder />}/>
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/resume-builder" element={<ResumeBuilder />} />

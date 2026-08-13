@@ -1,16 +1,50 @@
 function Navbar() {
   return (
-    <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
-        <h1 className="text-2xl font-bold text-blue-600">
-          CareerCompass AI
-        </h1>
+    <nav className="bg-white shadow-sm">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-4">
+        <div className="flex items-center justify-between gap-4">
 
-        <div className="flex gap-6">
-          <a href="#">Home</a>
-          <a href="#">Roadmaps</a>
-          <a href="#">Jobs</a>
-          <a href="#">Resume</a>
+          {/* Logo */}
+          <div className="text-xl sm:text-2xl font-bold text-blue-600 whitespace-nowrap">
+            CareerCompass AI
+          </div>
+
+          {/* Navigation */}
+          <div className="hidden sm:flex items-center gap-4 lg:gap-8 text-sm lg:text-base">
+            <a
+              href="#"
+              className="text-gray-700 hover:text-blue-600 transition"
+            >
+              Home
+            </a>
+
+            <a
+              href="#"
+              className="text-gray-700 hover:text-blue-600 transition"
+            >
+              Roadmaps
+            </a>
+
+            <a
+              href="#"
+              className="text-gray-700 hover:text-blue-600 transition"
+            >
+              Jobs
+            </a>
+
+            <a
+              href="#"
+              className="text-gray-700 hover:text-blue-600 transition"
+            >
+              Resume
+            </a>
+          </div>
+
+          {/* Mobile menu label */}
+          <div className="sm:hidden text-sm font-medium text-gray-500">
+            Menu
+          </div>
+
         </div>
       </div>
     </nav>

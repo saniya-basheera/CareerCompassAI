@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+.resume-section {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.avoid-break {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+#resume-preview {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  overflow: hidden;
+}
