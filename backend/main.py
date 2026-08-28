@@ -4,6 +4,7 @@ from jobmatcher import generate_job_match
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel
 from typing import List
 
@@ -18,36 +19,32 @@ from ai_service import (
 from resume import generate_resume
 
 
-# ============================================================
+# =========================================
 # APP
-# ============================================================
+# =========================================
 
 app = FastAPI(title="CareerCompass AI API")
 
 
-# ============================================================
+# =========================================
 # CORS
-# ============================================================
+# =========================================
 
 app.add_middleware(
     CORSMiddleware,
-
     allow_origins=[
-        "http://localhost:5173",
         "https://career-compass-ai-sage.vercel.app",
+        "http://localhost:5173",
     ],
-
-    allow_credentials=True,
-
+    allow_credentials=False,
     allow_methods=["*"],
-
     allow_headers=["*"],
 )
 
 
-# ============================================================
+# =========================================
 # MODELS
-# ============================================================
+# =========================================
 
 class CareerRequest(BaseModel):
     jobRole: str
@@ -127,9 +124,9 @@ class MockInterviewRequest(BaseModel):
     answer: str
 
 
-# ============================================================
+# =========================================
 # ROUTES
-# ============================================================
+# =========================================
 
 @app.get("/")
 def home():
@@ -138,27 +135,27 @@ def home():
     }
 
 
-# ============================================================
+# =========================================
 # CAREER ROADMAP
-# ============================================================
+# =========================================
 
 @app.post("/generate-roadmap")
 def roadmap(data: CareerRequest):
     return generate_roadmap(data.jobRole)
 
 
-# ============================================================
+# =========================================
 # INTERVIEW QUESTIONS
-# ============================================================
+# =========================================
 
 @app.post("/generate-interview")
 def interview(data: CareerRequest):
     return generate_interview(data.jobRole)
 
 
-# ============================================================
+# =========================================
 # COURSE RECOMMENDATION
-# ============================================================
+# =========================================
 
 @app.post("/course-recommendation")
 def course_recommendation(data: CourseRequest):
@@ -168,27 +165,27 @@ def course_recommendation(data: CourseRequest):
     )
 
 
-# ============================================================
+# =========================================
 # RESUME
-# ============================================================
+# =========================================
 
 @app.post("/generate-resume")
 def resume(data: ResumeRequest):
     return generate_resume(data.model_dump())
 
 
-# ============================================================
-# JD RESUME
-# ============================================================
+# =========================================
+# JOB DESCRIPTION RESUME
+# =========================================
 
 @app.post("/generate-jd-resume")
 def jd_resume(data: JDResumeRequest):
     return generate_jd_resume(data.model_dump())
 
 
-# ============================================================
+# =========================================
 # JOB MATCH
-# ============================================================
+# =========================================
 
 @app.post("/job-match")
 def job_match(data: JobMatchRequest):
@@ -199,9 +196,9 @@ def job_match(data: JobMatchRequest):
     )
 
 
-# ============================================================
+# =========================================
 # JOB OPENINGS
-# ============================================================
+# =========================================
 
 @app.post("/job-openings")
 def job_openings(data: JobSearchRequest):
@@ -211,9 +208,9 @@ def job_openings(data: JobSearchRequest):
     )
 
 
-# ============================================================
+# =========================================
 # MOCK INTERVIEW
-# ============================================================
+# =========================================
 
 @app.post("/mock-interview")
 def mock_interview(data: MockInterviewRequest):
