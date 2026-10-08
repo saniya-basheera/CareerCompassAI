@@ -1416,7 +1416,7 @@ function Dashboard() {
           className={`mt-8 rounded-3xl border p-6 shadow-xl ${ 
             isMidnight 
               ? "border-[#1B3155] bg-gradient-to-br from-[#06132A] to-[#091B39]" 
-              : "border-slate-200 bg-slate-950 text-white" 
+              : "border-slate-200 bg-white" 
           }`} 
         > 
  
@@ -1428,11 +1428,19 @@ function Dashboard() {
                 Current opportunities 
               </p> 
  
-              <h2 className="mt-1 text-2xl font-bold text-white"> 
+              <h2 
+                className={`mt-1 text-2xl font-bold ${ 
+                  isMidnight ? "text-white" : "text-slate-950" 
+                }`} 
+              > 
                 Job Openings 
               </h2> 
  
-              <p className="mt-1 text-sm text-slate-400"> 
+              <p 
+                className={`mt-1 text-sm ${ 
+                  isMidnight ? "text-slate-400" : "text-slate-500" 
+                }`} 
+              > 
                 Opportunities related to your selected career. 
               </p> 
  
@@ -1449,9 +1457,19 @@ function Dashboard() {
  
           {jobs.length === 0 ? ( 
  
-            <div className="rounded-xl border border-slate-700 bg-[#0D2042] p-6"> 
+            <div 
+              className={`rounded-xl border p-6 ${ 
+                isMidnight 
+                  ? "border-slate-700 bg-[#0D2042]" 
+                  : "border-slate-200 bg-slate-50" 
+              }`} 
+            > 
  
-              <p className="text-sm text-slate-300"> 
+              <p 
+                className={`text-sm ${ 
+                  isMidnight ? "text-slate-300" : "text-slate-600" 
+                }`} 
+              > 
                 No jobs found for this career right now. 
               </p> 
  
@@ -1470,19 +1488,31 @@ function Dashboard() {
  
                   <div 
                     key={index} 
-                    className="rounded-2xl border border-[#263E65] bg-[#0B1D3B] p-5 transition hover:border-blue-500 hover:bg-[#0E2448] hover:shadow-lg hover:shadow-blue-950/30" 
+                    className={`rounded-2xl border p-5 transition ${ 
+                      isMidnight 
+                        ? "border-[#263E65] bg-[#0B1D3B] hover:border-blue-500 hover:bg-[#0E2448] hover:shadow-lg hover:shadow-blue-950/30" 
+                        : "border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/30" 
+                    }`} 
                   > 
  
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"> 
  
                       <div> 
  
-                        <h3 className="text-lg font-bold text-white"> 
+                        <h3 
+                          className={`text-lg font-bold ${ 
+                            isMidnight ? "text-white" : "text-slate-950" 
+                          }`} 
+                        > 
                           {job.title || 
                             "Job Opportunity"} 
                         </h3> 
  
-                        <p className="mt-1 text-sm font-semibold text-blue-300"> 
+                        <p 
+                          className={`mt-1 text-sm font-semibold ${ 
+                            isMidnight ? "text-blue-300" : "text-blue-500" 
+                          }`} 
+                        > 
                           {job.company || 
                             "Company"} 
                         </p> 
@@ -1490,7 +1520,13 @@ function Dashboard() {
                       </div> 
  
                       {job.location && ( 
-                        <span className="w-fit shrink-0 rounded-full bg-[#162B50] px-3 py-1 text-xs font-medium text-slate-300"> 
+                        <span 
+                          className={`w-fit shrink-0 rounded-full px-3 py-1 text-xs font-medium ${ 
+                            isMidnight 
+                              ? "bg-[#162B50] text-slate-300" 
+                              : "bg-slate-100 text-slate-600" 
+                          }`} 
+                        > 
                           {job.location} 
                         </span> 
                       )} 
@@ -1510,7 +1546,11 @@ function Dashboard() {
  
  
                     {job.description && ( 
-                      <p className="mt-3 line-clamp-4 text-sm leading-6 text-slate-300"> 
+                      <p 
+                        className={`mt-3 line-clamp-4 text-sm leading-6 ${ 
+                          isMidnight ? "text-slate-300" : "text-slate-600" 
+                        }`} 
+                      > 
                         {job.description} 
                       </p> 
                     )} 
